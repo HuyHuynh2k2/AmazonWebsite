@@ -1,1 +1,1 @@
-Demo
+This project, created by Huy Huynh and inspired by Supersimpledev, aims to build a fully functional Amazon-like website. It includes a complete implementation of the frontend using HTML and CSS, as well as the backend using JavaScript and JSON.
