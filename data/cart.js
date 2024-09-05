@@ -1,5 +1,4 @@
-let cart;
-
-function loadFromStorage() {
-  cart
+function addToCart() {
+  
 }
+

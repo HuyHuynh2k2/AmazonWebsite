@@ -1,8 +1,8 @@
-// first we going to generate data 
+
 import { products } from "./data/products.js";
 
-
-
+// Store and generate data
+generateItem();
 
 function generateItem() {
   let html = '';
@@ -56,12 +56,12 @@ function generateItem() {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-">
         <img src="images/icons/checkmark.png">
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-cart-button" data-product-id="${productId}">
         Add to Cart
       </button>
     </div>
@@ -70,4 +70,9 @@ function generateItem() {
   document.querySelector('.js-products-display').innerHTML = html;
 }
 
-generateItem();
+function showAddedMessage(productId) {
+  const addedMessage = document.querySelector('.js-added-to-cart').value
+}
+
+
+
