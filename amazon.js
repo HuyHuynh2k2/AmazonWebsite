@@ -56,7 +56,7 @@ function generateItem() {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart js-added-">
+      <div class="added-to-cart js-added-to-cart-${productId}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -70,9 +70,34 @@ function generateItem() {
   document.querySelector('.js-products-display').innerHTML = html;
 }
 
+const addedMessageTimeouts = {}; // empty object
+
 function showAddedMessage(productId) {
-  const addedMessage = document.querySelector('.js-added-to-cart').value
+  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+
+  addedMessage.classList.add('added-to-cart-visible');
+
+  const previousTimeoutId = addedMessageTimeouts[productId]; // try to search this field in object
+  if(previousTimeoutId) {
+    clearTimeout(previousTimeoutId);
+  }
+
+  const timeoutId = setTimeout(() => {
+    addedMessage.classList.remove('added-to-cart-visible');
+  }, 2000);
+
+  addedMessageTimeouts[previousTimeoutId] = timeoutId;
 }
+
+// set action to the added button
+
+document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
+  button.addEventListener('click', () => {
+    const productId = button.dataset.productId;
+    
+    showAddedMessage(productId);
+  });
+});
 
 
 
