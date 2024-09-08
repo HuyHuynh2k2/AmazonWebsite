@@ -1,3 +1,11 @@
 import { loadProductsFetch } from "../data/products.js";
+import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
 
-loadProductsFetch();
+
+
+loadPage();
+
+async function loadPage() {
+  await loadProductsFetch();
+  renderCheckoutHeader();
+}
