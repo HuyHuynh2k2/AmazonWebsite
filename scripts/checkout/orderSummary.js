@@ -1,6 +1,7 @@
-import { cart } from "../../data/cart.js";
+import { cart, removeFromCart, loadFromMemory } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { loadProductsFetch, products } from "../../data/products.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export async function renderOrderSummary() {
   // Ensure products are loaded before proceeding
@@ -39,10 +40,10 @@ export async function renderOrderSummary() {
               <span>
                 Quantity: <span class="quantity-label">${item.quantity}</span>
               </span>
-              <span class="update-quantity-link link-primary">
+              <span class="update-quantity-link link-primary ">
                 Update
               </span>
-              <span class="delete-quantity-link link-primary">
+              <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchedItem.id}">
                 Delete
               </span>
             </div>
@@ -100,5 +101,22 @@ export async function renderOrderSummary() {
 
   // Update the DOM after HTML is fully built
   document.querySelector('.js-order-summary').innerHTML = html;
-  console.log(html);
+
+
+
+  /*
+  * Set up delete
+  */
+  document.querySelectorAll(".js-delete-link").forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      removeFromCart(productId);
+      
+      console.log(cart);
+
+      renderOrderSummary();
+      renderCheckoutHeader();
+    });
+  });
+  
 }

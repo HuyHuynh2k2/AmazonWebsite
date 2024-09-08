@@ -3,7 +3,7 @@ export let cart;
 
 loadFromMemory();
 
-function loadFromMemory() {
+export function loadFromMemory() {
   cart = JSON.parse(localStorage.getItem('cart'));
 
   if(!cart) {
@@ -53,6 +53,19 @@ export function addToCart(productId) {
   saveToStorage();
 }
 
+export function removeFromCart(productId) {
+  let newCart = [];
+  cart.forEach((product) => {
+    if(!(product.productId === productId)) {
+      newCart.push(product);
+    }
+  });
+  cart = newCart;
+
+  saveToStorage();
+}
+
+
 export function getCurrentCartQuantity() {
   let cartQuantity = 0;
   cart.forEach((item) => {
@@ -60,6 +73,7 @@ export function getCurrentCartQuantity() {
   }); 
   return cartQuantity;
 }
+
 
 
 
