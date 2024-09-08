@@ -9,16 +9,13 @@ import { formatCurrency } from "./utils/money.js";
 
 async function generateAmazon() {
   await loadProductsFetch();
-
-  console.log(products);
-
-  await generateItem();
+  generateItem();
 }
 
 generateAmazon();
 
 
-async function generateItem() {
+function generateItem() {
   let html = '';
 
   products.forEach((product) => {
