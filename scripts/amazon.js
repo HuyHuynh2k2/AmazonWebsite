@@ -1,6 +1,7 @@
 
 import { products } from "../data/products.js";
 import { cart, addToCart} from "../data/cart.js";
+import { formatCurrency } from "./utils/money.js";
 
 // Store and generate data
 generateItem();
@@ -37,7 +38,7 @@ function generateItem() {
       </div>
 
       <div class="product-price">
-        $${productPrice / 100}
+        $${formatCurrency(productPrice)}
       </div>
 
       <div class="product-quantity-container">
