@@ -30,8 +30,6 @@ function saveToStorage() {
 export function addToCart(productId) {
   const productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
 
-  console.log(productQuantity);
-
   // in case the item already exist
   let matchedItem;
 
