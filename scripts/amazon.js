@@ -4,9 +4,6 @@ import { cart, addToCart} from "../data/cart.js";
 import { formatCurrency } from "./utils/money.js";
 
 // Store and generate data
-
-
-
 async function generateAmazon() {
   await loadProductsFetch();
   generateItem();
