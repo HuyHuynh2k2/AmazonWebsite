@@ -1,5 +1,6 @@
 
 import { products } from "./data/products.js";
+import { cart, addToCart} from "./data/cart.js";
 
 // Store and generate data
 generateItem();
@@ -40,7 +41,7 @@ function generateItem() {
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-quantity-selector-${productId}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -70,6 +71,16 @@ function generateItem() {
   document.querySelector('.js-products-display').innerHTML = html;
 }
 
+/*
+* update current quantity of the cart.
+*/
+updateCartQuantity(); 
+
+
+/*
+* This code shows the added icon for 2 second 
+* after we click on 'add to cart button'.
+*/
 const addedMessageTimeouts = {}; // empty object
 
 function showAddedMessage(productId) {
@@ -89,15 +100,34 @@ function showAddedMessage(productId) {
   addedMessageTimeouts[previousTimeoutId] = timeoutId;
 }
 
-// set action to the added button
+/*
+* This code update the current cart quantity base on
+* cart array.
+*/
+function updateCartQuantity() {
+  let quantity = 0;
 
+  cart.forEach((item) => {
+    quantity += item.quantity;
+  });
+  document.querySelector('.js-cart-quantity').innerHTML = quantity;
+}
+
+
+/*
+* This code add the action listener into all 'add to cart' button.
+*/
 document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
     
     showAddedMessage(productId);
+    addToCart(productId);
+    updateCartQuantity();
+
   });
 });
+
 
 
 
