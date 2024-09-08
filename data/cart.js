@@ -65,6 +65,20 @@ export function removeFromCart(productId) {
   saveToStorage();
 }
 
+export function updateProductQuantity(productId, newQuantity) {
+  const matchedProduct = cart.find((product) => product.productId === productId); 
+
+  if (matchedProduct) {
+    if (newQuantity <= 0) {
+      removeFromCart(productId);
+    } else {
+      matchedProduct.quantity = newQuantity; 
+    }
+
+    saveToStorage(); 
+  }
+}
+
 
 export function getCurrentCartQuantity() {
   let cartQuantity = 0;

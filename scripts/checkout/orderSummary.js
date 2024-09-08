@@ -1,4 +1,4 @@
-import { cart, removeFromCart, loadFromMemory } from "../../data/cart.js";
+import { cart, removeFromCart, updateProductQuantity } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { loadProductsFetch, products } from "../../data/products.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
@@ -40,9 +40,11 @@ export async function renderOrderSummary() {
               <span>
                 Quantity: <span class="quantity-label">${item.quantity}</span>
               </span>
-              <span class="update-quantity-link link-primary ">
+              <span class="update-quantity-link link-primary js-update-link" data-product-id=${matchedItem.id}>
                 Update
               </span>
+              <input class="quantity-input js-quantity-input-${matchedItem.id}" >
+              <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchedItem.id}">Save</span>
               <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchedItem.id}">
                 Delete
               </span>
@@ -102,21 +104,33 @@ export async function renderOrderSummary() {
   // Update the DOM after HTML is fully built
   document.querySelector('.js-order-summary').innerHTML = html;
 
-
-
-  /*
-  * Set up delete
+ /*
+  * This code will set up the delete link
   */
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener('click', () => {
       const productId = link.dataset.productId;
       removeFromCart(productId);
-      
-      console.log(cart);
 
+      renderOrderSummary();
+      renderCheckoutHeader();
+      // need to render payement here.
+    });
+  });
+
+ /*
+  * This code is for update link
+  */
+  document.querySelectorAll('.js-save-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      const quantityInput = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+      
+      updateProductQuantity(productId, quantityInput);
+
+      // Re-render the order summary and checkout header after quantity update
       renderOrderSummary();
       renderCheckoutHeader();
     });
   });
-  
 }
