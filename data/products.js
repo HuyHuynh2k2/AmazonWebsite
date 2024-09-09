@@ -9,6 +9,16 @@ export async function loadProductsFetch() {
     return new Product(item);
   });
 }
+export function getProduct(productId) {
+  let matchedProduct;
+
+  products.forEach((product) => {
+    if(product.id === productId) {
+      matchedProduct = product;
+    }
+  });
+  return matchedProduct;
+}
 
 class Product {
   id;

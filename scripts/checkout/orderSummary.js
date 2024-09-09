@@ -2,6 +2,7 @@ import { cart, removeFromCart, updateProductQuantity } from "../../data/cart.js"
 import { formatCurrency } from "../utils/money.js";
 import { loadProductsFetch, products } from "../../data/products.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
+import { renderPayementSummary } from "./paymentSummary.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 
@@ -72,8 +73,7 @@ export async function renderOrderSummary() {
     }
   });
 
-  // Update the DOM after HTML is fully built
-  document.querySelector('.js-order-summary').innerHTML = html;
+  
 
 
   /**
@@ -121,6 +121,9 @@ export async function renderOrderSummary() {
     return html;
   }
 
+  // Update the DOM after HTML is fully built
+  document.querySelector('.js-order-summary').innerHTML = html;
+
   /**
    * This code update the updatedate element
    */
@@ -144,7 +147,7 @@ export async function renderOrderSummary() {
 
       renderOrderSummary();
       renderCheckoutHeader();
-      // need to render payement here.
+      renderPayementSummary();
     });
   });
 
@@ -178,6 +181,7 @@ export async function renderOrderSummary() {
 
     renderOrderSummary();
     renderCheckoutHeader();
+    renderPayementSummary();
    });
  });
 }
