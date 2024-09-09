@@ -2,6 +2,8 @@ import { cart, removeFromCart, updateProductQuantity } from "../../data/cart.js"
 import { formatCurrency } from "../utils/money.js";
 import { loadProductsFetch, products } from "../../data/products.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
+import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 
 export async function renderOrderSummary() {
   // Ensure products are loaded before proceeding
@@ -12,6 +14,13 @@ export async function renderOrderSummary() {
   let matchedItem = {};
 
   cart.forEach((item) => {
+
+    const deliveryOptionId = item.deliveryOptionId;
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D');
+
     // Find the matching product for the item in the cart
     const product = products.find((product) => item.productId === product.id);
     if (product) {
@@ -22,7 +31,7 @@ export async function renderOrderSummary() {
       `
       <div class="cart-item-container js-cart-item-container-${matchedItem.id}">
         <div class="delivery-date">
-          Delivery date: Tuesday, June 21
+          Delivery date: ${dateString}
         </div>
     
         <div class="cart-item-details-grid">
@@ -55,47 +64,9 @@ export async function renderOrderSummary() {
             <div class="delivery-options-title">
               Choose a delivery option:
             </div>
-            <div class="delivery-option">
-              <input type="radio" checked
-                class="delivery-option-input"
-                name="delivery-option-1">
-              <div>
-                <div class="delivery-option-date">
-                  Tuesday, June 21
-                </div>
-                <div class="delivery-option-price">
-                  FREE Shipping
-                </div>
-              </div>
-            </div>
-            <div class="delivery-option">
-              <input type="radio"
-                class="delivery-option-input"
-                name="delivery-option-1">
-              <div>
-                <div class="delivery-option-date">
-                  Wednesday, June 15
-                </div>
-                <div class="delivery-option-price">
-                  $4.99 - Shipping
-                </div>
-              </div>
-            </div>
-            <div class="delivery-option">
-              <input type="radio"
-                class="delivery-option-input"
-                name="delivery-option-1">
-              <div>
-                <div class="delivery-option-date">
-                  Monday, June 13
-                </div>
-                <div class="delivery-option-price">
-                  $9.99 - Shipping
-                </div>
-              </div>
+            ${deliveryOptionHTML(matchedItem, item)}
             </div>
           </div>
-        </div>
       </div>
       `;
     }
@@ -103,6 +74,52 @@ export async function renderOrderSummary() {
 
   // Update the DOM after HTML is fully built
   document.querySelector('.js-order-summary').innerHTML = html;
+
+
+  /**
+   * Set up delivery option
+   */
+  function deliveryOptionHTML(matchedProduct, item) {
+    let html = '';
+
+    deliveryOptions.forEach((deliveryOption) => {
+      const today = dayjs();
+      const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+      const dateString = deliveryDate.format('dddd, MMMM D');
+
+      const priceString = () => {
+        if (deliveryOption.priceCents === 0) {
+          return 'FREE';
+        } else {
+          return `$${formatCurrency(deliveryOption.priceCents)}`;
+        }
+      };
+
+      const isChecked = deliveryOption.id === item.deliveryOption; // because we have 3 options.
+      console.log(item.deliveryOption);
+
+      html += `
+      <div class="delivery-option js-delivery-option" 
+        data-product-id="${matchedProduct.id}"
+        data-delivery-option-id="${deliveryOption.id}"
+      >
+        <input type="radio"
+          ${isChecked ? 'checked': ''} 
+          class="delivery-option-input"
+          name="delivery-option-${matchedProduct.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${dateString}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString()} Shipping
+          </div>
+        </div>
+      </div>
+      `;
+    });
+    return html;
+  }
 
   /**
    * This code update the updatedate element
