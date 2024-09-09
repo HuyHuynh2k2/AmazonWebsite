@@ -27,12 +27,13 @@ Mobile-Friendly Interface: The layout and design adapt to different screen sizes
 Jasmine Testing Framework: The project incorporates Jasmine tests to verify the functionality of various shopping cart actions. This ensures that features such as adding/removing items from the cart and updating quantities work as expected.
 
 Technologies Used
-JavaScript (ES6+): Core language for dynamic functionality, including DOM manipulation, event handling, and integration of various features like cart management and delivery options.
-Day.js: A lightweight JavaScript library for date manipulation, used to calculate delivery dates dynamically.
-CSS: Custom styles for product displays, the shopping cart, and responsive layouts.
-Local Storage: Used for persisting cart data between sessions.
-Jasmine: A JavaScript testing framework to ensure reliability and correct behavior of the application.
-Modular Design: Separation of concerns is maintained by using JavaScript modules to handle different parts of the project (e.g., products, cart, and utilities).
+
+- JavaScript (ES6+): Core language for dynamic functionality, including DOM manipulation, event handling, and integration of various features like cart management and delivery options.
+- Day.js: A lightweight JavaScript library for date manipulation, used to calculate delivery dates dynamically.
+- CSS: Custom styles for product displays, the shopping cart, and responsive layouts.
+- Local Storage: Used for persisting cart data between sessions.
+- Jasmine: A JavaScript testing framework to ensure reliability and correct behavior of the application.
+- Modular Design: Separation of concerns is maintained by using JavaScript modules to handle different parts of the project (e.g., products, cart, and utilities).
 
 
 
