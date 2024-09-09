@@ -35,8 +35,4 @@ Jasmine: A JavaScript testing framework to ensure reliability and correct behavi
 Modular Design: Separation of concerns is maintained by using JavaScript modules to handle different parts of the project (e.g., products, cart, and utilities).
 
 
-Possible Future Enhancements
-User Authentication: Adding user accounts and login features to allow users to save their carts across devices.
-Payment Integration: Integration of a payment gateway for users to complete their purchases.
-Product Search and Filtering: Allow users to search for and filter products by various criteria like price, category, or ratings.
-Promotions and Discounts: Implementing coupon codes or discount features to enhance the shopping experience.
+
