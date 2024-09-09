@@ -20,7 +20,7 @@ export async function renderOrderSummary() {
       // Build the HTML string
       html += 
       `
-      <div class="cart-item-container">
+      <div class="cart-item-container js-cart-item-container-${matchedItem.id}">
         <div class="delivery-date">
           Delivery date: Tuesday, June 21
         </div>
@@ -38,7 +38,7 @@ export async function renderOrderSummary() {
             </div>
             <div class="product-quantity">
               <span>
-                Quantity: <span class="quantity-label">${item.quantity}</span>
+                Quantity: <span class="quantity-label js-quantity-label-${matchedItem.id}">${item.quantity}</span>
               </span>
               <span class="update-quantity-link link-primary js-update-link" data-product-id=${matchedItem.id}>
                 Update
@@ -104,6 +104,19 @@ export async function renderOrderSummary() {
   // Update the DOM after HTML is fully built
   document.querySelector('.js-order-summary').innerHTML = html;
 
+  /**
+   * This code update the updatedate element
+   */
+  document.querySelectorAll('.js-update-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      container.classList.add('is-editing-quantity');
+    });
+  });
+   
+  
  /*
   * This code will set up the delete link
   */
@@ -119,18 +132,35 @@ export async function renderOrderSummary() {
   });
 
  /*
-  * This code is for update link
+  * This code is for save link
   */
-  document.querySelectorAll('.js-save-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      const productId = link.dataset.productId;
-      const quantityInput = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
-      
-      updateProductQuantity(productId, quantityInput);
+ document.querySelectorAll('.js-save-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
 
-      // Re-render the order summary and checkout header after quantity update
-      renderOrderSummary();
-      renderCheckoutHeader();
-    });
-  });
+    const quantityInput = document.querySelector(
+      `.js-quantity-input-${productId}`
+    );
+
+    const newQuantity = Number(quantityInput.value);
+
+    if (newQuantity < 0 || newQuantity >= 1000) {
+      alert('Quantity must be at least 0 and less than 1000');
+      return;
+    }
+
+    updateProductQuantity(productId, newQuantity);
+
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+    container.classList.remove('is-editing-quantity');
+
+    const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`);
+    quantityLabel.innerHTML = newQuantity;
+
+    renderOrderSummary();
+    renderCheckoutHeader();
+   });
+ });
 }
